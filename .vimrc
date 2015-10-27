@@ -28,10 +28,8 @@ Plugin 'VundleVim/Vundle.vim'
 " Plugin 'user/L9', {'name': 'newL9'}
 " Autocomplete
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'rdnetto/YCM-Generator'
-Plugin 'tomasr/molokai'
 Plugin 'scrooloose/nerdtree'
-
+Plugin 'tomasr/molokai'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
