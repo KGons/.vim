@@ -29,7 +29,8 @@ Plugin 'VundleVim/Vundle.vim'
 " Autocomplete
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
-Plugin 'tomasr/molokai'
+Plugin 'majutsushi/tagbar'
+Plugin 'hari-rangarajan/CCTree'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -46,15 +47,22 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 " YCM to use exuberant ctags tag files
-" command: ctags -R --exclude='.svn' --fields=+l
+" command: Use RebuildCtags or ,t
 " --fields=+l (lowercase l) is mandatory
 let g:ycm_collect_identifiers_from_tags_files = 1
 
 " Set tagsfile the tagfile in cwd
+map <F7> :TagbarToggle<CR>
 set tags=./tags,tags;
-map t g]
-nnoremap ,t :!ctags -R --exclude=".svn build Build binaries Binaries out Out log Log gdb GDB" --fields=+l --langmap=c:.c.h<CR>
-command RebuildCtags !ctags -R --exclude='.svn build Build binaries Binaries out Out log Log gdb GDB' --fields=+l --langmap=c:.c.h
+map tl g]
+map tg <C-]>
+map tp :tp<CR>
+map tn :tn<CR>
+map ts :ts<space>
+map tb <C-t>
+nnoremap ,t :!ctags -R --exclude=".svn build Build binaries Binaries out Out log Log gdb GDB" -h ".c.h" --fields=+l --langmap=c:.c.h<CR>
+command! RebuildCtags !ctags -R --exclude='.svn build Build binaries Binaries out Out log Log gdb GDB' -h ".c.h" --fields=+l --langmap=c:.c.h
+" command SearchDir !grep -nr --include "*.c" --include "*.h" "<line1>" .
 " Buffer remap
 nnoremap ,b :ls<CR>:b<Space>
 
