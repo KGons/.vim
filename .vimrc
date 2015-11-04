@@ -60,8 +60,28 @@ map tp :tp<CR>
 map tn :tn<CR>
 map ts :ts<space>
 map tb <C-t>
-nnoremap ,t :!ctags -R --exclude=".svn build Build binaries Binaries out Out log Log gdb GDB" -h ".c.h" --fields=+l --langmap=c:.c.h<CR>
 command! RebuildCtags !ctags -R --exclude='.svn build Build binaries Binaries out Out log Log gdb GDB' -h ".c.h" --fields=+l --langmap=c:.c.h
+
+" Cscope managing
+if has("cscope")
+    set csprg=/usr/bin/cscope
+    set csto=0
+    set cst
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+    endif
+    set csverb
+endif
+
+function! RebuildCscope_file()
+    :!find . -iname '*.c' -o -iname '*.h' > cscope.files
+    :!cscope -b -i cscope.files -f cscope.out
+    :cs reset
+endfunction
+command! RebuildCscope :exec RebuildCscope_file()<CR>
+
 " command SearchDir !grep -nr --include "*.c" --include "*.h" "<line1>" .
 " Buffer remap
 nnoremap ,b :ls<CR>:b<Space>
