@@ -86,6 +86,9 @@ command! RebuildCscope :exec RebuildCscope_file()<CR>
 " Buffer remap
 nnoremap ,b :ls<CR>:b<Space>
 
+" To use :W as alias for :w
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+
 " Grep current word in current dir
 nnoremap ,s :exe 'grep ' . expand('<cword>') . ' *'<CR>
 
@@ -100,9 +103,18 @@ nnoremap <C-F12> :vertical resize -5<CR>
 nnoremap <esc> :noh<return><esc>
 nnoremap <esc>^[ <esc>^[
 
+" Switch between buffers without saving
+set hidden
+
+" Space bar to :, time saver
+nnoremap <space> :
+
+" Escape with å
+imap øø <esc>
+
 " Line numbers
 set relativenumber
-
+set number
 " File encoding
 set enc=utf-8
 set fenc=utf-8
