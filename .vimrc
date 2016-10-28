@@ -31,6 +31,9 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
 Plugin 'majutsushi/tagbar'
 Plugin 'hari-rangarajan/CCTree'
+Plugin 'DoxygenToolkit.vim'
+Plugin 'chrisbra/recover.vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -45,11 +48,12 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-
-" YCM to use exuberant ctags tag files
-" command: Use RebuildCtags or ,t
-" --fields=+l (lowercase l) is mandatory
 let g:ycm_collect_identifiers_from_tags_files = 1
+" Disabling diagnostics highlighting without disabling semantic completion
+"   Setting show_diag_ui=0, disabled semantic completion, setting the other options to 0 works good enough
+let g:ycm_show_diagnostics_ui = 1
+let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_enable_diagnostic_highlighting = 0
 
 " Set tagsfile the tagfile in cwd
 map <F7> :TagbarToggle<CR>
@@ -60,7 +64,7 @@ map tp :tp<CR>
 map tn :tn<CR>
 map ts :ts<space>
 map tb <C-t>
-command! RebuildCtags !ctags -R --exclude='.svn build Build binaries Binaries out Out log Log gdb GDB' -h ".c.h" --fields=+l --langmap=c:.c.h
+command! BuildCtags !ctags -R --exclude='.svn build Build binaries Binaries out Out log Log gdb GDB' -h ".c.h" --fields=+l --langmap=c:.c.h
 
 " Cscope managing
 if has("cscope")
@@ -80,7 +84,14 @@ function! RebuildCscope_file()
     :!cscope -b -i cscope.files -f cscope.out
     :cs reset
 endfunction
-command! RebuildCscope :exec RebuildCscope_file()<CR>
+command! BuildCscope :exec RebuildCscope_file()<CR>
+
+function! BuildTags_function()
+    :BuildCtags
+    :exec RebuildCscope_file()
+endfunction
+
+command! BuildTags :exec BuildTags_function()<CR>
 
 " command SearchDir !grep -nr --include "*.c" --include "*.h" "<line1>" .
 " Buffer remap
@@ -109,8 +120,9 @@ set hidden
 " Space bar to :, time saver
 nnoremap <space> :
 
-" Escape with å
-imap øø <esc>
+" Insert mode remaps
+" Escape with jj
+imap jj <esc>
 
 " Line numbers
 set relativenumber
@@ -195,3 +207,5 @@ nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
+" set listchars=nbsp:¬
+" set list
